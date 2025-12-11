@@ -5,4 +5,4 @@ const ElementCtor = defineCustomElement(GetTimezoneDateTimeDemo, {
   shadowRoot: false
 })
 
-customElements.define('get-timezone-datetime-demo', ElementCtor)
+customElements.define('get-timezone-date-time-demo', ElementCtor)

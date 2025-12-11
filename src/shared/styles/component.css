@@ -1,24 +1,40 @@
 p {
-  margin: 0;
+    margin: 0;
 }
 
 .endpoint_operation {
-  background-color: lavender;
-  padding: 8px;
-  width:100%;
+    background-color: lavender;
+    padding: 8px;
+    width: 100%;
 }
 
 .form_element_container {
-  margin:8px;
+    margin: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
 }
 
 .form_field {
-  padding:8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.form_field + .form_element_container,
+.form_element_container + .form_field,
+.form_element_container + .form_element_container {
+    margin-left: 2rem;
+    margin-top: 8px;
 }
 
 .form_button {
-  padding:8px;
-  background: #474747;
-  color:#fff;
-  border-color:#474747;
+    padding: 8px;
+    background: #474747;
+    color: #fff;
+    border-color: #474747;
+    cursor: pointer;
 }

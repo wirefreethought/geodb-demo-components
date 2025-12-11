@@ -1,8 +1,8 @@
 import { defineCustomElement } from 'vue'
-import GetPlaceDetailsDemo from "@/components/geo/GetPlaceDetailsDemo.vue";
+import GetPlaceDateTimeDemo from "@/components/geo/GetPlaceDateTimeDemo.vue";
 
-const ElementCtor = defineCustomElement(GetPlaceDetailsDemo, {
+const ElementCtor = defineCustomElement(GetPlaceDateTimeDemo, {
   shadowRoot: false
 })
 
-customElements.define('get-place-datetime-demo', ElementCtor)
+customElements.define('get-place-date-time-demo', ElementCtor)
