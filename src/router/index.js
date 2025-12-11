@@ -1,35 +1,34 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '@/views/Home.vue'
+// src/router/index.js
+import { createRouter, createWebHistory } from 'vue-router'
 
-import FindCountriesDemo from '@/components/geo/FindCountriesDemo'
-import FindCountryPlacesDemo from "@/components/geo/FindCountryPlacesDemo";
-import FindCountryRegionsDemo from '@/components/geo/FindCountryRegionsDemo'
-import GetCountryDetailsDemo from '@/components/geo/GetCountryDetailsDemo'
-import GetCountryRegionDetailsDemo from '@/components/geo/GetCountryRegionDetailsDemo'
-import GetCurrenciesDemo from '@/components/locale/GetCurrenciesDemo'
-import GetLanguagesDemo from '@/components/locale/GetLanguagesDemo'
-import GetLocalesDemo from '@/components/locale/GetLocalesDemo'
-import GetTimezonesDemo from '@/components/locale/GetTimezonesDemo'
-import GetTimezoneTimeDemo from '@/components/locale/GetTimezoneTimeDemo'
-import FindPlacesDemo from "@/components/geo/FindPlacesDemo";
-import FindPlacesNearLocationDemo from "@/components/geo/FindPlacesNearLocationDemo";
-import FindPlacesNearPlaceDemo from "@/components/geo/FindPlacesNearPlaceDemo";
-import GetPlaceAdminRegionDemo from "@/components/geo/GetPlaceAdminRegionDemo";
-import GetPlaceDateTimeDemo from "@/components/geo/GetPlaceDateTimeDemo";
-import GetPlaceDetailsDemo from "@/components/geo/GetPlaceDetailsDemo";
-import GetPlaceDistanceDemo from "@/components/geo/GetPlaceDistanceDemo";
-import GetPlaceTimeDemo from "@/components/geo/GetPlaceTimeDemo";
-import GetTimezoneDateTimeDemo from "@/components/locale/GetTimezoneDateTimeDemo";
-import FindCountryRegionPlacesDemo from "@/components/geo/FindCountryRegionPlacesDemo";
+import HomeView from '@/views/Home.vue'
 
-Vue.use(VueRouter)
+import FindCountriesDemo from '@/components/geo/FindCountriesDemo.vue'
+import FindCountryPlacesDemo from '@/components/geo/FindCountryPlacesDemo.vue'
+import FindCountryRegionsDemo from '@/components/geo/FindCountryRegionsDemo.vue'
+import GetCountryDetailsDemo from '@/components/geo/GetCountryDetailsDemo.vue'
+import GetCountryRegionDetailsDemo from '@/components/geo/GetCountryRegionDetailsDemo.vue'
+import GetCurrenciesDemo from '@/components/locale/GetCurrenciesDemo.vue'
+import GetLanguagesDemo from '@/components/locale/GetLanguagesDemo.vue'
+import GetLocalesDemo from '@/components/locale/GetLocalesDemo.vue'
+import GetTimezonesDemo from '@/components/locale/GetTimezonesDemo.vue'
+import GetTimezoneTimeDemo from '@/components/locale/GetTimezoneTimeDemo.vue'
+import FindPlacesDemo from '@/components/geo/FindPlacesDemo.vue'
+import FindPlacesNearLocationDemo from '@/components/geo/FindPlacesNearLocationDemo.vue'
+import FindPlacesNearPlaceDemo from '@/components/geo/FindPlacesNearPlaceDemo.vue'
+import GetPlaceAdminRegionDemo from '@/components/geo/GetPlaceAdminRegionDemo.vue'
+import GetPlaceDateTimeDemo from '@/components/geo/GetPlaceDateTimeDemo.vue'
+import GetPlaceDetailsDemo from '@/components/geo/GetPlaceDetailsDemo.vue'
+import GetPlaceDistanceDemo from '@/components/geo/GetPlaceDistanceDemo.vue'
+import GetPlaceTimeDemo from '@/components/geo/GetPlaceTimeDemo.vue'
+import GetTimezoneDateTimeDemo from '@/components/locale/GetTimezoneDateTimeDemo.vue'
+import FindCountryRegionPlacesDemo from '@/components/geo/FindCountryRegionPlacesDemo.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: HomeView
   },
   {
     path: '/find-countries',
@@ -113,7 +112,8 @@ const routes = [
   }
 ]
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(), // or createWebHashHistory() if you prefer hashes
   routes
 })
 

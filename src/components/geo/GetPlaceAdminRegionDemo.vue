@@ -7,35 +7,40 @@
       </div>
       <div class="form_field">
         <label>Place</label>
-        <place-autocomplete @onPlaceSelected="onPlaceSelected($event)"/>
+        <place-autocomplete @on-place-selected="onPlaceSelected($event)" />
       </div>
 
-      <div v-if="containingPlace" style="width:100%" class="form_field">
+      <div
+        v-if="containingPlace"
+        style="width:100%"
+        class="form_field"
+      >
         <table>
-          <tr><td width="200px"/><td width="250px"/></tr>
+          <tr><td width="200px" /><td width="250px" /></tr>
           <tr>
             <td>Name:</td>
-            <td>{{containingPlace.name}}</td>
+            <td>{{ containingPlace.name }}</td>
           </tr>
           <tr v-if="containingPlace.region">
             <td>State/Province/Region:</td>
-            <td>{{containingPlace.region}}</td>
+            <td>{{ containingPlace.region }}</td>
           </tr>
           <tr>
             <td>Location (latitude/longitude):</td>
-            <td>{{containingPlace.latitude}}/{{containingPlace.longitude}}</td>
+            <td>{{ containingPlace.latitude }}/{{ containingPlace.longitude }}</td>
           </tr>
           <tr>
             <td>Time-Zone:</td>
-            <td>{{containingPlace.timezone | formatTimeZone}}</td>
+            <!-- call a method instead of using a filter -->
+            <td>{{ formatTimeZone(containingPlace.timezone) }}</td>
           </tr>
           <tr>
             <td>Population:</td>
-            <td>{{containingPlace.population}}</td>
+            <td>{{ containingPlace.population }}</td>
           </tr>
           <tr v-if="containingPlace.elevationMeters">
             <td>Elevation (meters):</td>
-            <td>{{containingPlace.elevationMeters}}</td>
+            <td>{{ containingPlace.elevationMeters }}</td>
           </tr>
         </table>
       </div>
@@ -43,12 +48,8 @@
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete'
+import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete.vue'
 
 import Config from '@/shared/scripts/config'
 import DateTimeUtils from '@/shared/scripts/date-time-utils-mixin'
@@ -56,11 +57,11 @@ import DateTimeUtils from '@/shared/scripts/date-time-utils-mixin'
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'get-city-admin-region-demo',
-  mixins: [DateTimeUtils],
+  name: 'GetCityAdminRegionDemo',
   components: {
     PlaceAutocomplete
   },
+  mixins: [DateTimeUtils],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/places',
@@ -70,7 +71,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.containingPlace
+      const operation = this.containingPlace
         ? this.baseEndpointOperation + '/' + this.selectedPlaceId + '/locatedIn'
         : this.baseEndpointOperation + '/{placeId}/locatedIn'
 
@@ -103,3 +104,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@import "../../shared/styles/component.css";
+</style>

@@ -3,44 +3,52 @@
     <div style="display:flex; flex-direction:column; justify-content:flex-start">
       <pre class="endpoint_operation">{{ endpointOperation }}</pre>
     </div>
-    <data-table v-if="country"
-        :data="currentPageData"
-        :columns="columns"
-        :count="count"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        @pageChanged="onPageChanged">
-    </data-table>
+    <data-table
+      v-if="country"
+      :data="currentPageData"
+      :columns="columns"
+      :count="count"
+      :current-page="currentPage"
+      :page-size="pageSize"
+      @page-changed="onPageChanged"
+    />
     <div style="display:flex; flex-direction:column; justify-content:flex-start">
       <div style="display:flex; justify-content:flex-start">
         <div class="form_field">
           <label>Country</label>
-          <country-autocomplete @onCountrySelected="onCountrySelected($event)"/>
+          <country-autocomplete @on-country-selected="onCountrySelected($event)" />
         </div>
-        <place-type @placeTypeChanged="onPlaceTypeChanged"/>
+        <place-type @place-type-changed="onPlaceTypeChanged" />
       </div>
       <div style="display:flex; flex-flow:row">
-        <sort-by :options="sortByOptions" @sortChanged="onSortChanged"/>
-        <language @languageChanged="onLanguageChanged"/>
+        <sort-by
+          :options="sortByOptions"
+          @sort-changed="onSortChanged"
+        />
+        <language @language-changed="onLanguageChanged" />
       </div>
 
-      <div v-if="country" class="form_element_container">
-        <button @click="onRequestUpdated" class="form_button">Update Results</button>
+      <div
+        v-if="country"
+        class="form_element_container"
+      >
+        <button
+          class="form_button"
+          @click="onRequestUpdated"
+        >
+          Update Results
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import CountryAutocomplete from '@/shared/components/CountryAutocomplete'
-import DataTable from '@/shared/components/DataTable'
-import Language from '@/shared/components/Language'
-import PlaceType from "@/shared/components/PlaceType.vue";
-import SortBy from '@/shared/components/SortBy'
+import CountryAutocomplete from '@/shared/components/CountryAutocomplete.vue'
+import DataTable from '@/shared/components/DataTable.vue'
+import Language from '@/shared/components/Language.vue'
+import PlaceType from '@/shared/components/PlaceType.vue'
+import SortBy from '@/shared/components/SortBy.vue'
 
 import Config from '@/shared/scripts/config'
 import PageableMixin from '@/shared/scripts/pageable-mixin'
@@ -48,8 +56,7 @@ import PageableMixin from '@/shared/scripts/pageable-mixin'
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'find-country-places-demo',
-  mixins: [PageableMixin],
+  name: 'FindCountryPlacesDemo',
   components: {
     CountryAutocomplete,
     DataTable,
@@ -57,6 +64,7 @@ export default {
     PlaceType,
     SortBy
   },
+  mixins: [PageableMixin],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/countries',
@@ -83,7 +91,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.country
+      let operation = this.country
         ? this.baseEndpointOperation + '/' + this.country.code
         : this.baseEndpointOperation + '/{countryId}'
 
@@ -151,33 +159,37 @@ export default {
           offset: this.offset,
           hateoasMode: false
         }
-        ).then(
-          function (data) {
-            const placesResponse = Config.GEO_DB.PopulatedPlacesResponse.constructFromObject(data)
+      ).then(
+        function (data) {
+          const placesResponse = Config.GEO_DB.PopulatedPlacesResponse.constructFromObject(data)
 
-            const _data = []
+          const _data = []
 
-            for (const place of placesResponse.data) {
-              var location = place.latitude
+          for (const place of placesResponse.data) {
+            let location = place.latitude
 
-              if (place.longitude >= 0) {
-                location += '+'
-              }
-
-              location += '' + place.longitude
-
-              _data.push({ name: place.name, population: place.population, location: location })
+            if (place.longitude >= 0) {
+              location += '+'
             }
 
-            self.count = placesResponse.metadata.totalCount
-            self.currentPageData = _data
-          },
+            location += '' + place.longitude
 
-          function (error) {
-            console.error(error)
+            _data.push({ name: place.name, population: place.population, location })
           }
-        )
+
+          self.count = placesResponse.metadata.totalCount
+          self.currentPageData = _data
+        },
+
+        function (error) {
+          console.error(error)
+        }
+      )
     }
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

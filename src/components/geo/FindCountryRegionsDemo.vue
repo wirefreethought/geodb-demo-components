@@ -8,59 +8,72 @@
         :data="currentPageData"
         :columns="columns"
         :count="count"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        @pageChanged="onPageChanged">
-      </data-table>
+        :current-page="currentPage"
+        :page-size="pageSize"
+        @page-changed="onPageChanged"
+      />
     </div>
     <div style="display:flex; flex-direction:column; justify-content:start">
       <div style="display:flex; flex-direction:row; justify-content:start">
         <div class="form_element_container">
           <label>Country</label>
-          <country-autocomplete @onCountrySelected="onCountrySelected($event)"/>
+          <country-autocomplete @on-country-selected="onCountrySelected($event)" />
         </div>
         <div class="form_element_container">
-          <label>Name Prefix</label><br/>
-          <input v-model="namePrefix" placeholder="Region name prefix" class="form_field" style="width:150px"/>
+          <label>Name Prefix</label><br>
+          <input
+            v-model="namePrefix"
+            placeholder="Region name prefix"
+            class="form_field"
+            style="width:150px"
+          >
         </div>
       </div>
 
       <div style="display:flex; flex-flow:row; justify-content:start">
-        <sort-by :options="sortByOptions" :multiLevel="false" @sortChanged="onSortChanged"/>
-        <language @languageChanged="onLanguageChanged"/>
+        <sort-by
+          :options="sortByOptions"
+          :multi-level="false"
+          @sort-changed="onSortChanged"
+        />
+        <language @language-changed="onLanguageChanged" />
       </div>
 
-      <div v-if="country" class="form_element_container">
-        <button @click="onRequestUpdated" class="form_button">Update Results</button>
+      <div
+        v-if="country"
+        class="form_element_container"
+      >
+        <button
+          class="form_button"
+          @click="onRequestUpdated"
+        >
+          Update Results
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import CountryAutocomplete from '@/shared/components/CountryAutocomplete'
-import DataTable from '@/shared/components/DataTable'
-import Language from '@/shared/components/Language'
+import CountryAutocomplete from '@/shared/components/CountryAutocomplete.vue'
+import DataTable from '@/shared/components/DataTable.vue'
+import Language from '@/shared/components/Language.vue'
 
 import Config from '@/shared/scripts/config'
 import PageableMixin from '@/shared/scripts/pageable-mixin'
-import SortBy from "@/shared/components/SortBy.vue";
+import SortBy from '@/shared/components/SortBy.vue'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'find-country-regions',
-  mixins: [PageableMixin],
+  name: 'FindCountryRegions',
   components: {
     CountryAutocomplete,
     DataTable,
     Language,
     SortBy
   },
+  mixins: [PageableMixin],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/countries',
@@ -86,7 +99,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.baseEndpointOperation
+      let operation = this.baseEndpointOperation
 
       operation = this.country
         ? operation += '/' + this.country.code + '/regions'
@@ -164,3 +177,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

@@ -1,12 +1,13 @@
 <template>
   <autocomplete
     :options="currentResults"
-    :selectedIcon="this.selectedCountry ? this.selectedCountry.flagImageUri : ''"
+    :selected-icon="selectedCountry ? selectedCountry.flagImageUri : ''"
     placeholder="Enter country"
     width="150px"
     @input="onNamePrefixChanged"
-    @select="onCountrySelected">
-    <template slot="item" slot-scope="country">
+    @select="onCountrySelected"
+  >
+    <template #item="country">
       <div class="media">
         <p>
           <strong>{{ country.title }}</strong>
@@ -17,17 +18,17 @@
 </template>
 
 <script>
-import Autocomplete from './Autocomplete'
-
+import Autocomplete from './Autocomplete.vue'
 import Config from '../../shared/scripts/config'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'country-autocomplete',
+  name: 'CountryAutocomplete',
   components: {
     Autocomplete
   },
+  emits: ['onCountrySelected'],
   data () {
     return {
       currentResults: [],
@@ -37,7 +38,7 @@ export default {
   methods: {
     onNamePrefixChanged (prefix) {
       if (prefix.length < 3) {
-        return;
+        return
       }
 
       const self = this

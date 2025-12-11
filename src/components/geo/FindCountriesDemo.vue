@@ -7,52 +7,61 @@
       :data="currentPageData"
       :columns="columns"
       :count="count"
-      :currentPage="currentPage"
-      :pageSize="pageSize"
-      @pageChanged="onPageChanged">
-    </data-table>
+      :current-page="currentPage"
+      :page-size="pageSize"
+      @page-changed="onPageChanged"
+    />
     <div style="display:flex; flex-direction:column; justify-content:start">
       <div style="display:flex; flex-direction:row; justify-content:start">
         <div class="form_element_container">
-          <label>Name Prefix</label><br/>
-          <input v-model="namePrefix" placeholder="First letters of the country name" class="form_field" style="width:125px"/>
+          <label>Name Prefix</label><br>
+          <input
+            v-model="namePrefix"
+            placeholder="First letters of the country name"
+            class="form_field"
+            style="width:125px"
+          >
         </div>
       </div>
 
       <div style="display:flex; flex-flow:row; justify-content:start">
-        <sort-by :options="sortByOptions" @sortChanged="onSortChanged"/>
-        <language @languageChanged="onLanguageChanged"/>
+        <sort-by
+          :options="sortByOptions"
+          @sort-changed="onSortChanged"
+        />
+        <language @language-changed="onLanguageChanged" />
       </div>
 
       <div class="form_element_container">
-        <button @click="onRequestUpdated" class="form_button">Update Results</button>
+        <button
+          class="form_button"
+          @click="onRequestUpdated"
+        >
+          Update Results
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import DataTable from '@/shared/components/DataTable'
-import Language from '@/shared/components/Language'
+import DataTable from '@/shared/components/DataTable.vue'
+import Language from '@/shared/components/Language.vue'
 
 import Config from '@/shared/scripts/config'
 import PageableMixin from '@/shared/scripts/pageable-mixin'
-import SortBy from "@/shared/components/SortBy.vue";
+import SortBy from '@/shared/components/SortBy.vue'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'find-countries-demo',
-  mixins: [PageableMixin],
+  name: 'FindCountriesDemo',
   components: {
     DataTable,
     Language,
     SortBy
   },
+  mixins: [PageableMixin],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/countries',
@@ -75,7 +84,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.baseEndpointOperation + '?limit=' + this.pageSize + '&offset=' + this.offset
+      let operation = this.baseEndpointOperation + '?limit=' + this.pageSize + '&offset=' + this.offset
 
       if (this.namePrefix) {
         operation += '&namePrefix=' + encodeURIComponent(this.namePrefix)
@@ -141,3 +150,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

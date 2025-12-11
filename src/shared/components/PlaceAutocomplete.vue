@@ -4,8 +4,9 @@
     placeholder="Enter place"
     width="200px"
     @input="onNamePrefixChanged"
-    @select="onPlaceSelected">
-    <template slot="item" slot-scope="place">
+    @select="onPlaceSelected"
+  >
+    <template #item="place">
       <div class="media">
         <p>
           <strong>{{ place.title }}</strong>
@@ -16,17 +17,17 @@
 </template>
 
 <script>
-import Autocomplete from './Autocomplete'
-
+import Autocomplete from './Autocomplete.vue'
 import Config from '@/shared/scripts/config'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'place-autocomplete',
+  name: 'PlaceAutocomplete',
   components: {
     Autocomplete
   },
+  emits: ['onPlaceSelected'],
   data () {
     return {
       currentResults: []
@@ -35,7 +36,7 @@ export default {
   methods: {
     onNamePrefixChanged (prefix) {
       if (prefix.length < 3) {
-        return;
+        return
       }
 
       const self = this

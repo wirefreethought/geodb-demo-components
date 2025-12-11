@@ -5,34 +5,33 @@
       <div style="display:flex; justify-content:flex-start">
         <div class="form_field">
           <label>Place</label>
-          <place-autocomplete @onPlaceSelected="onPlaceSelected($event)"/>
+          <place-autocomplete @on-place-selected="onPlaceSelected($event)" />
         </div>
-        <div v-if="time" class="form_field">
+        <div
+          v-if="time"
+          class="form_field"
+        >
           <label>Local Time</label>
-          <div>{{time}}</div>
+          <div>{{ time }}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
 import Config from '@/shared/scripts/config'
 import DateTimeUtils from '@/shared/scripts/date-time-utils-mixin'
-import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete'
+import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete.vue'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'get-place-datetime-demo',
-  mixins: [DateTimeUtils],
+  name: 'GetPlaceDatetimeDemo',
   components: {
     PlaceAutocomplete
   },
+  mixins: [DateTimeUtils],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/places',
@@ -46,6 +45,11 @@ export default {
       return this.placeId
         ? this.baseEndpointOperation + '/' + this.placeId + '/time'
         : this.baseEndpointOperation + '/{placeId}/time'
+    }
+  },
+  watch: {
+    placeId: function () {
+      this.updateTime()
     }
   },
   methods: {
@@ -70,11 +74,10 @@ export default {
     onPlaceSelected (place) {
       this.placeId = place.id
     }
-  },
-  watch: {
-    placeId: function () {
-      this.updateTime()
-    }
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

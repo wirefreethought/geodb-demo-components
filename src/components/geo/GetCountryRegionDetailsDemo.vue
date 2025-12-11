@@ -4,26 +4,36 @@
       <pre class="endpoint_operation">{{ endpointOperation }}</pre>
       <div class="form_field">
         <label>Country</label>
-        <country-autocomplete @onCountrySelected="onCountrySelected($event)"/>
+        <country-autocomplete @on-country-selected="onCountrySelected($event)" />
       </div>
-      <div v-if="countryId" class="form_field">
+      <div
+        v-if="countryId"
+        class="form_field"
+      >
         <label>Region</label>
-        <region-autocomplete :countryId="countryId" @onRegionSelected="onRegionSelected($event)"/>
+        <region-autocomplete
+          :country-id="countryId"
+          @on-region-selected="onRegionSelected($event)"
+        />
       </div>
-      <div v-if="regionDetails" style="width:100%" class="form_field">
+      <div
+        v-if="regionDetails"
+        style="width:100%"
+        class="form_field"
+      >
         <table>
-          <tr><td width="100px"/><td width="250px"/></tr>
+          <tr><td width="100px" /><td width="250px" /></tr>
           <tr>
             <td>FIPS:</td>
-            <td>{{regionDetails.fipsCode}}</td>
+            <td>{{ regionDetails.fipsCode }}</td>
           </tr>
           <tr>
             <td>ISO:</td>
-            <td>{{regionDetails.isoCode}}</td>
+            <td>{{ regionDetails.isoCode }}</td>
           </tr>
           <tr v-if="regionDetails.numCities > 0">
             <td>Cities/Towns:</td>
-            <td>{{regionDetails.numCities}}</td>
+            <td>{{ regionDetails.numCities }}</td>
           </tr>
         </table>
       </div>
@@ -31,20 +41,16 @@
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import CountryAutocomplete from '@/shared/components/CountryAutocomplete'
-import RegionAutocomplete from '@/shared/components/RegionAutocomplete'
+import CountryAutocomplete from '@/shared/components/CountryAutocomplete.vue'
+import RegionAutocomplete from '@/shared/components/RegionAutocomplete.vue'
 
 import Config from '@/shared/scripts/config'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'get-country-region-details-demo',
+  name: 'GetCountryRegionDetailsDemo',
   components: {
     CountryAutocomplete,
     RegionAutocomplete
@@ -58,7 +64,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.countryId
+      let operation = this.countryId
         ? this.baseEndpointOperation + '/' + this.countryId
         : this.baseEndpointOperation + '/{countryId}'
 
@@ -93,3 +99,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

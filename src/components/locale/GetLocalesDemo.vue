@@ -7,19 +7,15 @@
       :data="currentPageData"
       :columns="columns"
       :count="count"
-      :currentPage="currentPage"
-      :pageSize="pageSize"
-      @pageChanged="onPageChanged">
-    </data-table>
+      :current-page="currentPage"
+      :page-size="pageSize"
+      @page-changed="onPageChanged"
+    />
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import DataTable from '@/shared/components/DataTable'
+import DataTable from '@/shared/components/DataTable.vue'
 
 import Config from '@/shared/scripts/config'
 import PageableMixin from '@/shared/scripts/pageable-mixin'
@@ -27,11 +23,11 @@ import PageableMixin from '@/shared/scripts/pageable-mixin'
 const localeApi = new Config.GEO_DB.LocaleApi()
 
 export default {
-  name: 'get-locales',
-  mixins: [PageableMixin],
+  name: 'GetLocales',
   components: {
     DataTable
   },
+  mixins: [PageableMixin],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/locale/locales',
@@ -71,3 +67,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

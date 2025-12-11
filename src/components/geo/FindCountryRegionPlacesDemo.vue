@@ -3,54 +3,78 @@
     <div style="display:flex; flex-direction:column; justify-content:start">
       <pre class="endpoint_operation">{{ endpointOperation }}</pre>
     </div>
-    <data-table v-if="regionCode"
+    <data-table
+      v-if="regionCode"
       :data="currentPageData"
       :columns="columns"
       :count="count"
-      :currentPage="currentPage"
-      :pageSize="pageSize"
-      @pageChanged="onPageChanged">
-    </data-table>
+      :current-page="currentPage"
+      :page-size="pageSize"
+      @page-changed="onPageChanged"
+    />
     <div style="display:flex; flex-direction:column; justify-content:start">
       <div style="display:flex; flex-direction:row; justify-content:start">
         <div class="form_element_container">
           <label>Country</label>
-          <country-autocomplete @onCountrySelected="onCountrySelected($event)"/>
+          <country-autocomplete @on-country-selected="onCountrySelected($event)" />
         </div>
-        <div v-if="country" class="form_element_container">
+        <div
+          v-if="country"
+          class="form_element_container"
+        >
           <label>Region</label>
-          <region-autocomplete :countryId="country.code" @onRegionSelected="onRegionSelected($event)"/>
+          <region-autocomplete
+            :country-id="country.code"
+            @on-region-selected="onRegionSelected($event)"
+          />
         </div>
-        <place-type v-if="regionCode" @placeTypeChanged="onPlaceTypeChanged"/>
-        <div v-if="regionCode" class="form_element_container">
-          <label>Min Population</label><br/>
-          <input v-model="minPopulation" placeholder="Minimum population" class="form_field"/>
+        <place-type
+          v-if="regionCode"
+          @place-type-changed="onPlaceTypeChanged"
+        />
+        <div
+          v-if="regionCode"
+          class="form_element_container"
+        >
+          <label>Min Population</label><br>
+          <input
+            v-model="minPopulation"
+            placeholder="Minimum population"
+            class="form_field"
+          >
         </div>
       </div>
 
       <div style="display:flex; flex-flow:row">
-        <sort-by :options="sortByOptions" @sortChanged="onSortChanged"/>
-        <language @languageChanged="onLanguageChanged"/>
+        <sort-by
+          :options="sortByOptions"
+          @sort-changed="onSortChanged"
+        />
+        <language @language-changed="onLanguageChanged" />
       </div>
 
-      <div v-if="regionCode" class="form_element_container">
-        <button @click="onRequestUpdated" class="form_button">Update Results</button>
+      <div
+        v-if="regionCode"
+        class="form_element_container"
+      >
+        <button
+          class="form_button"
+          @click="onRequestUpdated"
+        >
+          Update Results
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import CountryAutocomplete from '@/shared/components/CountryAutocomplete'
-import DataTable from '@/shared/components/DataTable'
-import Language from '@/shared/components/Language'
-import PlaceType from "@/shared/components/PlaceType.vue"
-import RegionAutocomplete from '@/shared/components/RegionAutocomplete'
-import SortBy from '@/shared/components/SortBy'
+import CountryAutocomplete from '@/shared/components/CountryAutocomplete.vue'
+import DataTable from '@/shared/components/DataTable.vue'
+import Language from '@/shared/components/Language.vue'
+import PlaceType from '@/shared/components/PlaceType.vue'
+import RegionAutocomplete from '@/shared/components/RegionAutocomplete.vue'
+import SortBy from '@/shared/components/SortBy.vue'
 
 import Config from '@/shared/scripts/config'
 import PageableMixin from '@/shared/scripts/pageable-mixin'
@@ -58,8 +82,7 @@ import PageableMixin from '@/shared/scripts/pageable-mixin'
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'find-country-region-places-demo',
-  mixins: [PageableMixin],
+  name: 'FindCountryRegionPlacesDemo',
   components: {
     CountryAutocomplete,
     DataTable,
@@ -68,6 +91,7 @@ export default {
     PlaceType,
     SortBy
   },
+  mixins: [PageableMixin],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/countries',
@@ -95,7 +119,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.country
+      let operation = this.country
         ? this.baseEndpointOperation + '/' + this.country.code
         : this.baseEndpointOperation + '/{countryId}'
 
@@ -180,7 +204,7 @@ export default {
             const _data = []
 
             for (const place of placesResponse.data) {
-              var location = place.latitude
+              let location = place.latitude
 
               if (place.longitude >= 0) {
                 location += '+'
@@ -188,7 +212,7 @@ export default {
 
               location += '' + place.longitude
 
-              _data.push({ name: place.name, population: place.population, location: location })
+              _data.push({ name: place.name, population: place.population, location })
             }
 
             self.count = placesResponse.metadata.totalCount
@@ -203,3 +227,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

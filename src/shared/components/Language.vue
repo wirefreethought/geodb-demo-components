@@ -1,8 +1,19 @@
 <template>
   <div class="form_element_container">
-    <label>Language</label><br/>
-    <select v-model="languageCode" @change="onChanged" class="form_field">
-      <option v-for="language in languages" v-bind="language" :value="language.code">{{language.name}}</option>
+    <label>Language</label><br>
+    <select
+      v-model="languageCode"
+      class="form_field"
+      @change="onChanged"
+    >
+      <option
+        v-for="language in languages"
+        :key="language.code"
+        v-bind="language"
+        :value="language.code"
+      >
+        {{ language.name }}
+      </option>
     </select>
   </div>
 </template>
@@ -13,24 +24,25 @@ import Config from '../../shared/scripts/config'
 const localeApi = new Config.GEO_DB.LocaleApi()
 
 export default {
-  name: 'language',
+  name: 'LanguageSelect',
+  emits: ['languageChanged'],
   data () {
     return {
       languageCode: 'en',
       languages: []
     }
   },
-  created: function () {
+  created () {
     // Load first 10 languages.
     this.loadLanguages(10, 0)
   },
   methods: {
-    loadLanguages: function (limit, offset) {
+    loadLanguages (limit, offset) {
       const self = this
 
       localeApi.getLanguagesUsingGET({
-        limit: limit,
-        offset: offset,
+        limit,
+        offset,
         hateoasMode: false
       }).then(
         function (data) {
@@ -54,7 +66,7 @@ export default {
         }
       )
     },
-    onChanged: function () {
+    onChanged () {
       this.$emit('languageChanged', this.languageCode)
     }
   }

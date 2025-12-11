@@ -4,8 +4,9 @@
     placeholder="Enter region"
     width="150px"
     @input="onNamePrefixChanged"
-    @select="onRegionSelected">
-    <template slot="item" slot-scope="region">
+    @select="onRegionSelected"
+  >
+    <template #item="region">
       <div class="media">
         <p>
           <strong>{{ region.title }}</strong>
@@ -16,14 +17,13 @@
 </template>
 
 <script>
-import Autocomplete from './Autocomplete'
-
+import Autocomplete from './Autocomplete.vue'
 import Config from '../../shared/scripts/config'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'region-autocomplete',
+  name: 'RegionAutocomplete',
   components: {
     Autocomplete
   },
@@ -33,6 +33,7 @@ export default {
       required: true
     }
   },
+  emits: ['onRegionSelected'],
   data () {
     return {
       currentResults: []
@@ -41,7 +42,7 @@ export default {
   methods: {
     onNamePrefixChanged (prefix) {
       if (prefix.length < 3) {
-        return;
+        return
       }
 
       const self = this

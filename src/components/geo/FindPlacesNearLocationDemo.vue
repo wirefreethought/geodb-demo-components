@@ -3,67 +3,86 @@
     <div style="display:flex; flex-direction:column; justify-content:flex-start">
       <pre class="endpoint_operation">{{ endpointOperation }}</pre>
     </div>
-    <data-table v-if="count > 0"
+    <data-table
+      v-if="count > 0"
       :data="currentPageData"
       :columns="columns"
       :count="count"
-      :currentPage="currentPage"
-      :pageSize="pageSize"
-      @pageChanged="onPageChanged">
-    </data-table>
+      :current-page="currentPage"
+      :page-size="pageSize"
+      @page-changed="onPageChanged"
+    />
     <div style="display:flex; flex-direction:column; justify-content:start">
       <div style="display:flex; flex-flow:row; justify-content:start">
         <div class="form_element_container">
-          <label>Location</label><br/>
-          <input v-model="locationId" placeholder="Lat/Long: ±DD.DDDD±DDD.DDDD" class="form_field" style="width:150px"/>
+          <label>Location</label><br>
+          <input
+            v-model="locationId"
+            placeholder="Lat/Long: ±DD.DDDD±DDD.DDDD"
+            class="form_field"
+            style="width:150px"
+          >
         </div>
-        <place-type @placeTypeChanged="onPlaceTypeChanged"/>
+        <place-type @place-type-changed="onPlaceTypeChanged" />
         <div class="form_element_container">
-          <label>Min Population</label><br/>
-          <input v-model="minPopulation" placeholder="Minimum population" class="form_field"/>
+          <label>Min Population</label><br>
+          <input
+            v-model="minPopulation"
+            placeholder="Minimum population"
+            class="form_field"
+          >
         </div>
         <div class="form_element_container">
-          <label>Radius</label><br/>
-          <input v-model="radius" placeholder="<= 100 MI (demo)" class="form_field" style="width:125px"/>
+          <label>Radius</label><br>
+          <input
+            v-model="radius"
+            placeholder="<= 100 MI (demo)"
+            class="form_field"
+            style="width:125px"
+          >
         </div>
       </div>
 
       <div style="display:flex; flex-flow:row; justify-content:start">
-        <sort-by :options="sortByOptions" @sortChanged="onSortChanged"/>
-        <language @languageChanged="onLanguageChanged"/>
+        <sort-by
+          :options="sortByOptions"
+          @sort-changed="onSortChanged"
+        />
+        <language @language-changed="onLanguageChanged" />
       </div>
 
       <div class="form_element_container">
-        <button @click="onRequestUpdated" class="form_button">Update Results</button>
+        <button
+          class="form_button"
+          @click="onRequestUpdated"
+        >
+          Update Results
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import DataTable from '@/shared/components/DataTable'
-import Language from '@/shared/components/Language'
-import SortBy from '@/shared/components/SortBy'
+import DataTable from '@/shared/components/DataTable.vue'
+import Language from '@/shared/components/Language.vue'
+import SortBy from '@/shared/components/SortBy.vue'
 
 import Config from '@/shared/scripts/config'
 import PageableMixin from '@/shared/scripts/pageable-mixin'
-import PlaceType from "@/shared/components/PlaceType.vue";
+import PlaceType from '@/shared/components/PlaceType.vue'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'find-places-near-location-demo',
-  mixins: [PageableMixin],
+  name: 'FindPlacesNearLocationDemo',
   components: {
     DataTable,
     Language,
     PlaceType,
     SortBy
   },
+  mixins: [PageableMixin],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/locations',
@@ -93,7 +112,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.locationId
+      let operation = this.locationId
         ? this.baseEndpointOperation + '/' + this.locationId + '/nearbyPlaces'
         : this.baseEndpointOperation + '/{locationId}/nearbyPlaces'
 
@@ -170,7 +189,7 @@ export default {
             const _data = []
 
             for (const place of placesResponse.data) {
-              var location = place.latitude
+              let location = place.latitude
 
               if (place.longitude >= 0) {
                 location += '+'
@@ -178,7 +197,7 @@ export default {
 
               location += '' + place.longitude
 
-              _data.push({ distance: place.distance, name: place.name, population: place.population, location: location, country: place.country })
+              _data.push({ distance: place.distance, name: place.name, population: place.population, location, country: place.country })
             }
 
             self.count = placesResponse.metadata.totalCount
@@ -193,3 +212,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

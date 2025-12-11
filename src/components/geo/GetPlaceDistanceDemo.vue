@@ -5,33 +5,32 @@
       <div style="display:flex; justify-content:flex-start">
         <div class="form_field">
           <label>From</label>
-          <place-autocomplete @onPlaceSelected="onFromPlaceSelected($event)"/>
+          <place-autocomplete @on-place-selected="onFromPlaceSelected($event)" />
         </div>
         <div class="form_field">
           <label>To</label>
-          <place-autocomplete @onPlaceSelected="onToPlaceSelected($event)"/>
+          <place-autocomplete @on-place-selected="onToPlaceSelected($event)" />
         </div>
-        <div v-if="distance" class="form_field">
+        <div
+          v-if="distance"
+          class="form_field"
+        >
           <label>Distance</label>
-          <div>{{distance}} miles</div>
+          <div>{{ distance }} miles</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
 import Config from '@/shared/scripts/config'
-import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete'
+import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete.vue'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'get-place-distance-demo',
+  name: 'GetPlaceDistanceDemo',
   components: {
     PlaceAutocomplete
   },
@@ -46,7 +45,7 @@ export default {
   },
   computed: {
     endpointOperation () {
-      var operation = this.toPlaceId
+      let operation = this.toPlaceId
         ? this.baseEndpointOperation + '/' + this.toPlaceId + '/distance'
         : this.baseEndpointOperation + '/{toPlaceId}/distance'
 
@@ -55,6 +54,14 @@ export default {
         : operation + '?toPlaceId=toPlaceId}'
 
       return operation
+    }
+  },
+  watch: {
+    fromPlaceId: function () {
+      this.calculateDistance()
+    },
+    toPlaceId: function () {
+      this.calculateDistance()
     }
   },
   methods: {
@@ -82,14 +89,10 @@ export default {
     onToPlaceSelected (place) {
       this.toPlaceId = place.id
     }
-  },
-  watch: {
-    fromPlaceId: function () {
-      this.calculateDistance()
-    },
-    toPlaceId: function () {
-      this.calculateDistance()
-    }
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

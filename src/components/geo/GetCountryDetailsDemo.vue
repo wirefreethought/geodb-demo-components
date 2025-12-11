@@ -4,26 +4,30 @@
       <pre class="endpoint_operation">{{ endpointOperation }}</pre>
       <div class="form_field">
         <label>Country</label>
-        <country-autocomplete @onCountrySelected="onCountrySelected($event)"/>
+        <country-autocomplete @on-country-selected="onCountrySelected($event)" />
       </div>
-      <div v-if="countryDetails" style="width:100%" class="form_field">
+      <div
+        v-if="countryDetails"
+        style="width:100%"
+        class="form_field"
+      >
         <table>
-          <tr><td width="200px"/><td width="250px"/></tr>
+          <tr><td width="200px" /><td width="250px" /></tr>
           <tr>
             <td>ISO Code:</td>
-            <td>{{countryDetails.code}}</td>
+            <td>{{ countryDetails.code }}</td>
           </tr>
           <tr>
             <td>Calling Code:</td>
-            <td>{{countryDetails.callingCode}}</td>
+            <td>{{ countryDetails.callingCode }}</td>
           </tr>
           <tr>
             <td>Supported Currencies:</td>
-            <td>{{countryDetails.currencyCodes.join(', ')}}</td>
+            <td>{{ countryDetails.currencyCodes.join(', ') }}</td>
           </tr>
           <tr>
             <td>States/Provinces/Regions:</td>
-            <td>{{countryDetails.numRegions}}</td>
+            <td>{{ countryDetails.numRegions }}</td>
           </tr>
         </table>
       </div>
@@ -31,19 +35,15 @@
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import CountryAutocomplete from '@/shared/components/CountryAutocomplete'
+import CountryAutocomplete from '@/shared/components/CountryAutocomplete.vue'
 
 import Config from '@/shared/scripts/config'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'get-country-details-demo',
+  name: 'GetCountryDetailsDemo',
   components: {
     CountryAutocomplete
   },
@@ -80,3 +80,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  @import "../../shared/styles/component.css";
+</style>

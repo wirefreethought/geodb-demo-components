@@ -1,50 +1,55 @@
 <template>
   <v-app light>
     <v-navigation-drawer
-        fixed
-        light
-        :mini-variant="miniVariant"
-        :clipped="clipped"
-        v-model="drawer"
-        width="300px"
-        app
+      v-model="drawer"
+      fixed
+      light
+      :mini-variant="miniVariant"
+      :clipped="clipped"
+      app
     >
-      <v-list dense class="pt-0">
+      <v-list
+        dense
+        class="pt-0"
+      >
         <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            value="true"
-            router
-            v-bind:to="item.action"
+          v-for="(item, i) in items"
+          :key="i"
+          value="true"
+          router
+          :to="item.action"
         >
           <v-list-item-action>
-            <v-icon dark v-html="item.icon"></v-icon>
+            <!-- use icon prop instead of v-html -->
+            <v-icon :icon="item.icon" />
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
+            <!-- interpolate title instead of v-text -->
+            <v-list-item-title>
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title v-text="title"></v-app-bar-title>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <!-- interpolate title instead of v-text -->
+      <v-app-bar-title>
+        {{ title }}
+      </v-app-bar-title>
     </v-app-bar>
 
     <v-main>
-      <v-container fluid>
+      <v-container fluid class="pa-4">
         <v-slide-y-transition mode="out-in">
-          <router-view></router-view>
+          <router-view />
         </v-slide-y-transition>
       </v-container>
     </v-main>
   </v-app>
 </template>
-
-<style scoped>
-@import './shared/styles/app.css';
-</style>
 
 <script>
 export default {
@@ -163,3 +168,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@import './shared/styles/app.css';
+</style>

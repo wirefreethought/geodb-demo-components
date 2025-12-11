@@ -4,56 +4,60 @@
       <pre class="endpoint_operation">{{ endpointOperation }}</pre>
       <div class="form_field">
         <label>Place</label>
-        <place-autocomplete @onPlaceSelected="onPlaceSelected($event)"/>
+        <place-autocomplete @on-place-selected="onPlaceSelected($event)" />
       </div>
 
-      <div v-if="placeDetails" style="width:100%" class="form_field">
+      <div
+        v-if="placeDetails"
+        style="width:100%"
+        class="form_field"
+      >
         <table>
-          <tr><td width="200px"/><td width="250px"/></tr>
+          <tbody>
+          <tr>
+            <td width="200px"></td>
+            <td width="250px"></td>
+          </tr>
           <tr v-if="placeDetails.region">
             <td>State/Province/Region:</td>
-            <td>{{placeDetails.region}}</td>
+            <td>{{ placeDetails.region }}</td>
           </tr>
           <tr>
             <td>Location (latitude/longitude):</td>
-            <td>{{placeDetails.latitude}}/{{placeDetails.longitude}}</td>
+            <td>{{ placeDetails.latitude }}/{{ placeDetails.longitude }}</td>
           </tr>
           <tr>
             <td>Time-Zone:</td>
-            <td>{{placeDetails.timezone | formatTimeZone}}</td>
+            <td>{{ formatTimeZone(placeDetails.timezone) }}</td>
           </tr>
           <tr>
             <td>Population:</td>
-            <td>{{placeDetails.population}}</td>
+            <td>{{ placeDetails.population }}</td>
           </tr>
           <tr v-if="placeDetails.elevationMeters">
             <td>Elevation (meters):</td>
-            <td>{{placeDetails.elevationMeters}}</td>
+            <td>{{ placeDetails.elevationMeters }}</td>
           </tr>
+          </tbody>
         </table>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-  @import "../../shared/styles/component.css";
-</style>
-
 <script>
-import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete'
-
+import PlaceAutocomplete from '@/shared/components/PlaceAutocomplete.vue'
 import Config from '@/shared/scripts/config'
 import DateTimeUtils from '@/shared/scripts/date-time-utils-mixin'
 
 const geoApi = new Config.GEO_DB.GeoApi()
 
 export default {
-  name: 'get-place-details-demo',
-  mixins: [DateTimeUtils],
+  name: 'GetPlaceDetailsDemo',
   components: {
     PlaceAutocomplete
   },
+  mixins: [DateTimeUtils],
   data () {
     return {
       baseEndpointOperation: 'GET /v1/geo/places',
@@ -75,14 +79,14 @@ export default {
         place.id,
         {
           languageCode: this.languageCode
-        })
+        }
+      )
         .then(
           function (data) {
             const response = Config.GEO_DB.PopulatedPlaceResponse.constructFromObject(data)
 
             self.placeDetails = response.data
           },
-
           function (error) {
             console.error(error)
           }
@@ -91,3 +95,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@import "../../shared/styles/component.css";
+</style>

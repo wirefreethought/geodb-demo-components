@@ -1,17 +1,46 @@
 <template>
   <div style="display:flex; flex-direction:row; justify-content:start">
     <div class="form_element_container">
-      <label>Sort By</label><br/>
-      <select v-model="sort1" @change="onSort1Changed" class="form_field">
-        <option value="">NONE</option>
-        <option v-for="option in options" v-bind="option" :value="option.value">{{option.title}}</option>
+      <label>Sort By</label><br>
+      <select
+        v-model="sort1"
+        class="form_field"
+        @change="onSort1Changed"
+      >
+        <option value="">
+          NONE
+        </option>
+        <option
+          v-for="option in options"
+          :key="option.value"
+          v-bind="option"
+          :value="option.value"
+        >
+          {{ option.title }}
+        </option>
       </select>
     </div>
-    <div v-if="multiLevel && sort1 !== ''" class="form_element_container">
-      <label>Then By</label><br/>
-      <select v-model="sort2" @change="onChanged" class="form_field">
-        <option value="">NONE</option>
-        <option v-if="!isSort1Value(option.value)" v-for="option in options" v-bind="option" :value="option.value">{{option.title}}</option>
+    <div
+      v-if="multiLevel && sort1 !== ''"
+      class="form_element_container"
+    >
+      <label>Then By</label><br>
+      <select
+        v-model="sort2"
+        class="form_field"
+        @change="onChanged"
+      >
+        <option value="">
+          NONE
+        </option>
+        <option
+          v-for="option in secondLevelOptions"
+          :key="option.value"
+          v-bind="option"
+          :value="option.value"
+        >
+          {{ option.title }}
+        </option>
       </select>
     </div>
   </div>
@@ -19,21 +48,36 @@
 
 <script>
 export default {
-  name: 'sort-by',
+  name: 'SortBySelect',
   props: {
-    multiLevel: true,
-    options: Array
+    multiLevel: {
+      type: Boolean,
+      default: true
+    },
+    options: {
+      type: Array,
+      default: () => []
+    }
   },
+  emits: ['sortChanged'],
   data () {
     return {
       sort1: '',
       sort2: ''
     }
   },
+  computed: {
+    secondLevelOptions () {
+      // avoid v-if + v-for on same element by pre-filtering
+      return this.options.filter(
+        option => !this.isSort1Value(option.value)
+      )
+    }
+  },
   methods: {
-    getDirectionlessSortValue: function (value) {
+    getDirectionlessSortValue (value) {
       if (value.length > 0) {
-        var firstChar = value.charAt(0)
+        const firstChar = value.charAt(0)
 
         return firstChar === '+' || firstChar === '-'
           ? value.substring(1)
@@ -42,10 +86,13 @@ export default {
 
       return value
     },
-    isSort1Value: function (value) {
-      return this.getDirectionlessSortValue(this.sort1) === this.getDirectionlessSortValue(value)
+    isSort1Value (value) {
+      return (
+        this.getDirectionlessSortValue(this.sort1) ===
+        this.getDirectionlessSortValue(value)
+      )
     },
-    onChanged: function () {
+    onChanged () {
       let sort = this.sort1
 
       if (this.sort2 !== '') {
@@ -54,9 +101,8 @@ export default {
 
       this.$emit('sortChanged', sort)
     },
-    onSort1Changed: function () {
+    onSort1Changed () {
       this.sort2 = ''
-
       this.onChanged()
     }
   }
