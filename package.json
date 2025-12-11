@@ -30,6 +30,7 @@
     "fast-glob": "^3.3.3",
     "sass": "^1.77.8",
     "vite": "^6.0.5",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-vuetify": "^2.1.2",
     "vue-eslint-parser": "^10.2.0"
   },

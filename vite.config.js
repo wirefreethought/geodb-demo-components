@@ -4,6 +4,7 @@ import vuetify from 'vite-plugin-vuetify'
 import { fileURLToPath, URL } from 'node:url'
 import { resolve } from 'node:path'
 import fg from 'fast-glob'
+import viteCompression from 'vite-plugin-compression'
 
 function buildComponentEntries () {
   const files = fg.sync(
@@ -45,7 +46,13 @@ const componentEntries = buildComponentEntries()
 export default defineConfig({
   plugins: [
     vue(),
-    vuetify({ autoImport: true })
+    vuetify({ autoImport: true }),
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',              // produce *.gz files
+      deleteOriginFile: false, // keep original .js files
+      threshold: 0             // compress all files; raise if you want a min size
+    })
   ],
 
   resolve: {
